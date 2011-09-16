@@ -10,12 +10,11 @@ class ShortenItGrailsPlugin {
         "grails-app/views/error.gsp"
     ]
 
-    // TODO Fill in these fields
     def title = "Shorten It Plugin" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def author = "Enzo Aquino"
+    def authorEmail = "enzo.aquino@cassidiancommunications.com"
     def description = '''\
-Brief summary/description of the plugin.
+Plugin that provides url shortening for your grails app.
 '''
 
     // URL to the plugin's documentation
@@ -24,7 +23,7 @@ Brief summary/description of the plugin.
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
+    def license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
 //    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]
