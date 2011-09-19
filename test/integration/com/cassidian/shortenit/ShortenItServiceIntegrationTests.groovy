@@ -9,7 +9,6 @@ class ShortenItServiceIntegrationTests {
     def dataSource
     def sql
     def shortenItService
-    static transactional = false
 
     @Before
     void setUp() {
@@ -24,6 +23,7 @@ class ShortenItServiceIntegrationTests {
     }
 
     void testNextUriValue() {
+        println "test"
         assert 1000 == shortenItService.nextUriValue()
     }   
 }

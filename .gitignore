@@ -11,3 +11,7 @@ target*/**
 **/*.class
 
 **/*.swp
+
+**/*.*.swp
+
+**/*.log
