@@ -1,7 +1,13 @@
 target*
+
 target*/**
+
 .settings
+
 .classpath
+
 .project
+
 **/*.class
+
 **/*.swp
