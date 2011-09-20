@@ -8,6 +8,13 @@ class ShortenItService {
                             'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 	def dataSource
 
+    /**
+     * Converts the url to a shortened uri.If it already exists, will returned the existing shortened uri
+     * and increment the reference count.
+     *
+     * @param a non-<code>null</code> url.
+     * @return the shortened uri parameter.
+     */
     String shortenUrl(String url) {
         if (url == null) return null;
         Url shortenedUrl = Url.findByUrl(url)
