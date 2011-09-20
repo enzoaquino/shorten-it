@@ -8,6 +8,26 @@ class ShortenItService {
                             'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 	def dataSource
 
+    String shortenUrl(String url) {
+        if (url == null) return null;
+        Url shortenedUrl = Url.findByUrl(url)
+        if (shortenedUrl) {
+            // Done as a update to avoid the optimistic locking problem
+            Url.executeUpdate(
+                "update Url u set u.referencedCount = u.referencedCount + 1 where u.id = :id", 
+                [id: shortenedUrl.id])
+        } else {
+            shortenedUrl = new Url()
+            shortenedUrl.url = url
+            shortenedUrl.internal = url.startsWith("/")
+            shortenedUrl.shortUri = encodeUri(nextUriValue())
+            shortenedUrl.referencedCount = 0
+            shortenedUrl.save(failOnError:true)
+        }
+
+        return shortenedUrl.shortUri
+    }
+
 	/**
 	 * Converts a Long into a base-62 encoded String.
 	 * 
