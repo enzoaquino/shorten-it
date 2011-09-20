@@ -9,21 +9,15 @@ class ShortenItService {
 	def dataSource
 
     /**
-     * Converts the url to a shortened uri.If it already exists, will returned the existing shortened uri
-     * and increment the reference count.
+     * Converts the url to a shortened uri.If it already exists, will returned the existing shortened uri.
      *
-     * @param a non-<code>null</code> url.
+     * @param url a non-<code>null</code> url.
      * @return the shortened uri parameter.
      */
     String shortenUrl(String url) {
         if (url == null) return null;
         Url shortenedUrl = Url.findByUrl(url)
-        if (shortenedUrl) {
-            // Done as a update to avoid the optimistic locking problem
-            Url.executeUpdate(
-                "update Url u set u.referencedCount = u.referencedCount + 1 where u.id = :id", 
-                [id: shortenedUrl.id])
-        } else {
+        if (!shortenedUrl) {
             shortenedUrl = new Url()
             shortenedUrl.url = url
             shortenedUrl.internal = url.startsWith("/")
@@ -33,6 +27,26 @@ class ShortenItService {
         }
 
         return shortenedUrl.shortUri
+    }
+
+    /**
+     * Fetches the url represented by the shortened uri. If it exists, it incremented the referenced count.
+     * 
+     * @param uri the shortened uri
+     * @return the full url, if it exists, else <code>null</code>
+     */
+    String fetchFullUrl(String uri) {
+        if (uri == null) return null;
+        String fullUrl = null
+        Url url = Url.findByShortUri(uri)
+        if (url) {
+            fullUrl = url.url
+            // Done as a update to avoid the optimistic locking problem
+            Url.executeUpdate(
+                "update Url u set u.referencedCount = u.referencedCount + 1 where u.id = :id", 
+                [id: url.id])
+        }
+        return fullUrl
     }
 
 	/**

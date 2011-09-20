@@ -55,10 +55,27 @@ class ShortenItServiceIntegrationTests {
         String originalUri = shortenItService.shortenUrl("/test")
         String uri = shortenItService.shortenUrl("/test")
         assert originalUri == uri
+    }
 
-        flush(); clear(); // because the code does an update, we need to clear out the cache.
+    void testFetchFullUrlExists() {
+        String uri = shortenItService.shortenUrl("/test")
+        assert null != uri
+        flush()
+        String fullUrl = shortenItService.fetchFullUrl(uri)
+        assert fullUrl == "/test"
+        
+        flush();clear();
         Url url = Url.findByShortUri(uri)
         assert 1 == url.referencedCount
+    }
+
+    void testFetchFullUrlNoMatchingUrl() {
+        String fullUrl = shortenItService.fetchFullUrl("I don't exist")
+        assert null == fullUrl
+    }
+
+    void testFetchFullUrlNull() {
+        assert null == shortenItService.fetchFullUrl(null)
     }
 
     void flush() {
